@@ -5,64 +5,68 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NiftyKit.js Test Suite</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>NiftyKit.js Static Page Test</title>
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+
+    <!-- Milligram CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+
+    <style>
+        .invisible {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container mx-auto">
-        <h1 class="text-3xl mb-10 mt-10 font-bold underline">NiftyKit.js Test Suite</h1>
+    <div class="container">
+        <h1 style="margin-top: 10px;">NiftyKit.js Static Page Test</h1>
         <div id="collection-info" class="invisible">
-            <p id="price">
-            </p>
-            <p id="max-mint">
-            </p>
-            <p id="max-wallet">
-            </p>
-            <p id="tokens-minted">
-            </p>
-            <p id="supply">
-            </p>
-            <p id="sale-status"></p>
-            <select class="form-select appearance-none
-                block
-                px-3
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding bg-no-repeat
-                border border-solid border-gray-300
-                rounded
-                transition
-                ease-in-out
-                mb-3
-                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                aria-label="Select # of tokens" id="quantity">
-            </select>
-            <button id="mint" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Mint</button>
+            <div class="row">
+                <div class="column">
+                    <pre>
+                        <code id="json">
+                        </code>
+                    </pre>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <select aria-label="Select # of tokens" id="quantity">
+                    </select>
+                </div>
+                <div class="column">
+                    <button id="mint" class="button">Mint</button>
+                </div>
+            </div>
         </div>
 
-        <div id="settings">
-            <div class="mb-5">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="key">
+        <div class="row" id="settings">
+            <div class="column">
+                <label for="key">
                     SDK Public Key
                 </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="key" type="text" placeholder="E.g: d497f35e-6f7c-4d85-948c-baa9ca139061">
+                <input value="EAEWCN1AJlu4rDh8XNSQ" id="key" type="text" placeholder="E.g: ZAEWCX1AJlu4rDh8XNSQ">
             </div>
-            <div class="mb-5">
-                <input
-                    class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                    type="checkbox" value="" id="dev">
-                <label class="form-check-label inline-block text-gray-800" for="dev">
+            <div class="column">
+                <input type="checkbox" value="true" checked id="dev">
+                <label for="dev">
                     Dev Mode
                 </label>
             </div>
-            <button id="start"
-                class="bg-blue-500 bt-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Start</button>
+            <div class="column">
+                <button id="start" class="button-outline">Start</button>
+            </div>
+        </div>
+        <div id="reset-container" class="row invisible">
+            <div class="column">
+                <button id="reset" class="button-outline">Reset</button>
+            </div>
         </div>
 
     </div>
@@ -85,35 +89,24 @@
                     document.getElementById('quantity').appendChild(option);
                 }
 
-                // Get the price
-                const price = await drop.price();
-                document.getElementById('price').innerText = `Price: ${price}`;
-
-                // Get the max mint
-                const maxMint = await drop.maxPerMint();
-                document.getElementById('max-mint').innerText = `Max Per Mint: ${maxMint}`;
-
-                // Get the max wallet
-                const maxWallet = await drop.maxPerWallet();
-                document.getElementById('max-wallet').innerText = `Max Per Wallet: ${maxWallet}`;
-
-                // Get the tokens minted by the user
-                const tokensMinted = await drop.walletTokensCount();
-                document.getElementById('tokens-minted').innerText = `Minted by you: ${tokensMinted}`;
-
-                // Gets total supply
-                const supply = await drop.totalSupply();
-                document.getElementById('supply').innerText = `Total Supply: ${supply}`;
-
-                // Gets sales status
-                const saleActive = await drop.saleActive();
-                const presaleActive = await drop.presaleActive();
-
-                document.getElementById('sale-status').innerText =
-                    `Sale Active ${saleActive} | Presale Active ${presaleActive}`;
-
+                // Builds the object
+                const collection = {
+                    price: await drop.price(),
+                    maxPerMint: await drop.maxPerMint(),
+                    maxPerWallet: await drop.maxPerWallet(),
+                    walletTokensCount: await drop.walletTokensCount(),
+                    totalSupply: await drop.totalSupply(),
+                    auctionDuration: await drop.auctionDuration(),
+                    auctionStartedAt: await drop.auctionStartedAt(),
+                    auctionPrice: await drop.auctionPrice(),
+                    auctionActive: await drop.auctionActive(),
+                    saleActive: await drop.saleActive(),
+                    presaleActive: await drop.presaleActive()
+                };
+                document.getElementById('json').innerText = JSON.stringify(collection, null, 2);
                 document.getElementById('settings').classList.add('invisible');
                 document.getElementById('collection-info').classList.remove('invisible');
+                document.getElementById('reset-container').classList.remove('invisible');
             } catch (error) {
                 console.error(error);
                 alert(error);
@@ -125,6 +118,17 @@
                 const quantity = document.getElementById('quantity').value;
                 await drop.mint(quantity);
                 alert(`Minted ${quantity} tokens`);
+            } catch (error) {
+                console.error(error);
+                alert(error);
+            }
+        });
+
+        document.getElementById('reset').addEventListener('click', (e) => {
+            try {
+                document.getElementById('settings').classList.remove('invisible');
+                document.getElementById('collection-info').classList.add('invisible');
+                document.getElementById('reset-container').classList.add('invisible');
             } catch (error) {
                 console.error(error);
                 alert(error);
