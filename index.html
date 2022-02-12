@@ -62,6 +62,9 @@
             <div class="column">
                 <button id="start" class="button-outline">Start</button>
             </div>
+            <div class="column">
+                <button id="quick-test" class="button-outline">Mint(1)</button>
+            </div>
         </div>
         <div id="reset-container" class="row invisible">
             <div class="column">
@@ -118,6 +121,19 @@
                 const quantity = document.getElementById('quantity').value;
                 await drop.mint(quantity);
                 alert(`Minted ${quantity} tokens`);
+            } catch (error) {
+                console.error(error);
+                alert(error);
+            }
+        });
+
+        document.getElementById('quick-test').addEventListener('click', async (e) => {
+            try {
+                const key = document.getElementById('key').value;
+                const dev = document.getElementById('dev').checked;
+                drop = await DropKit.create(key, dev);
+                await drop.mint(1);
+                alert(`Minted 1 token`);
             } catch (error) {
                 console.error(error);
                 alert(error);
