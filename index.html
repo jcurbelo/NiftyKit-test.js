@@ -20,6 +20,20 @@
             display: none !important;
         }
     </style>
+
+    <style>
+        .web3modal-modal-lightbox {
+            z-index: 99 !important;
+        }
+
+        .web3modal-modal-container {
+            display: block !important;
+        }
+
+        .web3modal-modal-card {
+            display: inline-grid !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -74,7 +88,7 @@
 
     </div>
 
-    <script async src="https://unpkg.com/dropkit.js@v0.0.11-rc1/dist/umd/index.js"></script>
+    <script async src="https://unpkg.com/dropkit.js@v0.0.11-rc4/dist/umd/index.js"></script>
     <script>
         let drop = null;
         document.getElementById('start').addEventListener('click', async (e) => {
