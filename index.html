@@ -95,7 +95,7 @@
 
     </div>
 
-    <script async src="https://unpkg.com/dropkit.js@v0.0.11-rc4/dist/umd/index.js"></script>
+    <script async src="https://unpkg.com/dropkit.js/dist/umd/index.js"></script>
     <script>
         let drop = null;
         document.getElementById('start').addEventListener('click', async (e) => {
@@ -125,7 +125,8 @@
                     auctionPrice: await drop.auctionPrice(),
                     auctionActive: await drop.auctionActive(),
                     saleActive: await drop.saleActive(),
-                    presaleActive: await drop.presaleActive()
+                    presaleActive: await drop.presaleActive(),
+                    maxAmount: await drop.maxAmount(),
                 };
                 document.getElementById('json').innerText = JSON.stringify(collection, null, 2);
                 document.getElementById('settings').classList.add('invisible');
